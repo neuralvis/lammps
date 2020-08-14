@@ -34,10 +34,10 @@ cmake ../cmake/ \
 
 ```bash
 # sampling experiment
-pat_build -Drtenv=PAT_RT_SUMMARY=0 -Drtenv=PAT_RT_TRACE_HOOKS=1  lmp
+pat_build -Drtenv=PAT_RT_TRACE_HOOKS=1  lmp
 
 # tracing experiment
-pat_build -g mpi -Drtenv=PAT_RT_SUMMARY=0 -Drtenv=PAT_RT_TRACE_HOOKS=1 -u lmp
+pat_build -g mpi  -Drtenv=PAT_RT_TRACE_HOOKS=1 -u lmp
 
 ```
 
@@ -55,9 +55,8 @@ srun -n 16 build/lmp+pat -i examples/DIFFUSE/in.msd.2d
 pat_report -v -f rpt -o report.rpt .
 
 # loop timing report
-pat_report -v -O loop_times -f rpt -o loop_times.rpt .
-pat_report -v -O profile_loops -f rpt -o profile_loops.rpt .
-pat_report -v -O loop_callers -f rpt -o loop_callers.rpt .
+pat_report -v -O loop_times,loop_callers -f rpt -o loop_overall.rpt .
+pat_report -v -O loop_times_all,loop_callers_all -f rpt -o loop_detailed.rpt .
 
 # nid mapping to PE
 pat_report -v -O nids -f rpt -o nids.rpt .
