@@ -18,6 +18,8 @@ CC=/opt/cray/pe/craype/2.7.1.4/bin/cc CXX=/opt/cray/pe/craype/2.7.1.4/bin/CC \
 cmake ../cmake/ \
 -DBUILD_MPI=yes \
 -DCMAKE_CXX_FLAGS=-finstrument-loops \
+-DCMAKE_BUILD_TYPE=RelWithDebInfo \
+-DCMAKE_EXE_LINKER_FLAGS=-finstrument-loops \
 -DPKG_ASPHERE=yes \
 -DPKG_BODY=yes \
 -DPKG_COLLOID=yes \
