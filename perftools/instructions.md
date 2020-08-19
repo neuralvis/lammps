@@ -28,18 +28,25 @@ cmake ../cmake/ \
 -DPKG_MANYBODY=yes \
 -DPKG_MISC=yes \
 -DPKG_MOLECULE=yes
+
+make -j16
 ```
 
 ## Instrument the executable
 
 ```bash
 # sampling experiment
-pat_build -Drtenv=PAT_RT_TRACE_HOOKS=1  lmp
+pat_build -Drtenv=PAT_RT_SUMMARY=1 -Drtenv=PAT_RT_TRACE_HOOKS=1 lmp
 
 # tracing experiment
-pat_build -g mpi  -Drtenv=PAT_RT_TRACE_HOOKS=1 -u lmp
+pat_build -g mpi -Drtenv=PAT_RT_SUMMARY=1 -Drtenv=PAT_RT_TRACE_HOOKS=1 -u lmp
 
 ```
+
+### Notes
+
+* `-Drtenv=PAT_RT_TRACE_HOOKS=1` enables data from compiler hooks (i.e. `-finstrument-loops` above) to be captured in the craypat output
+* Using `-Drtenv=PAT_RT_SUMMARY=0` - i.e. disabling runtime summarization and data aggregation will **not** print any loop data
 
 ## Run lammps
 
@@ -49,6 +56,8 @@ srun -n 16 build/lmp+pat -i examples/DIFFUSE/in.msd.2d
 ```
 
 ## Running reports
+
+### General Reports
 
 ```bash
 # general profile report
@@ -64,8 +73,21 @@ pat_report -v -O nids -f rpt -o nids.rpt .
 # report for a sampling experiment
 pat_report -v -O samp_profile+src -f rpt -o samp_profile+src.rpt .
 
+```
+
+### Specific Reports
+
+```bash
+# Customized profile report
+
+pat_report -v -d ti%@0.95,ti,tr,Tc -b gr,fu,ni,pe -s table.min_sa_pct=0.95,show_data="csv" -f rpt -o custom_profile_report.rpt .
+
+
+pat_report -v -d LU@0.0095,LT,tl,Lc@,Lz,La,Lm,LM,Ln -b fu=/.LOOP[.],ni,pe -s table.min_sa_pct=0.95 -s table.missing_dopt=tolerate -s table.overhead=include -s table.total=hide -f rpt -o loop_overall.rpt .
 
 ```
+
+
 
 
 ## LAMMPS Instructions from Sam Partee
