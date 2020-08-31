@@ -3,8 +3,8 @@
 
 # settings
 
-variable	x equal 40
-variable	y equal 40
+variable	x equal 80
+variable	y equal 80
 
 variable	rho equal 0.6
 variable        t equal 1.0
