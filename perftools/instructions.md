@@ -14,7 +14,7 @@ cd lammps
 mkdir build
 cd build
 
-CC=/opt/cray/pe/craype/2.7.1.4/bin/cc CXX=/opt/cray/pe/craype/2.7.1.4/bin/CC \
+CC=/opt/cray/pe/craype/2.7.2/bin/cc CXX=/opt/cray/pe/craype/2.7.2/bin/CC \
 cmake ../cmake/ \
 -DBUILD_MPI=yes \
 -DCMAKE_CXX_FLAGS=-finstrument-loops \
