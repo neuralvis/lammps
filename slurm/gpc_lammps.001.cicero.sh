@@ -27,5 +27,5 @@ module load perftools-base perftools
 srun --exclusive -N 10 -n 480 \
      /home/users/msrinivasa/develop/GPCNET/network_load_test &
 
-srun --exclusive -N 10 -n 480 \
+srun --exclusive -N 10 -n 16 \
      /home/users/msrinivasa/develop/lammps/build/lmp+trace -i examples/DIFFUSE/in.msd.2d
