@@ -6,9 +6,9 @@
 # specify its partition
 #SBATCH --partition=iv24
 # job stdout file
-#SBATCH --output=gpc_lammps.001.%J.out
+#SBATCH --output=stdout/gpc_lammps.001.%J.out
 # job stderr file
-#SBATCH --error=gpc_lammps.001.%J.err
+#SBATCH --error=stdout/gpc_lammps.001.%J.err
 # On failure, requeue for another try
 # maximum job time in HH:MM:SS
 #SBATCH --time=06:00:00
@@ -24,8 +24,9 @@ module load cray-mpich
 module load perftools-base perftools
 
 
-srun --exclusive -N 10 -n 480 \
-     /home/users/msrinivasa/develop/GPCNET/network_load_test &
+# srun --exclusive -N 10 -n 480 \
+#     /home/users/msrinivasa/develop/GPCNET/network_load_test &
 
 srun --exclusive -N 10 -n 16 \
-     /home/users/msrinivasa/develop/lammps/build/lmp+trace -i examples/DIFFUSE/in.msd.2d
+     /home/users/msrinivasa/develop/lammps/build/lmp+trace \
+     -i /home/users/msrinivasa/develop/lammps/examples/DIFFUSE/in.msd.2d
