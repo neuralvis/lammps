@@ -2,3 +2,5 @@ std/
 *.err
 *.out
 lmp+*
+*.dat
+*.rec
