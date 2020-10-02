@@ -25,7 +25,7 @@ module load perftools-base perftools
 
 # Run gpcnet with 10 ppn
 srun --exclusive -N 138 -n 1380 \
-     /home/users/msrinivasa/develop/GPCNET/network_load_test > gpc.001.out &
+    /home/users/msrinivasa/develop/GPCNET/network_load_test > gpc.out &
 
 # wait till gpcnet primes up the network
 sleep 10
@@ -33,7 +33,7 @@ sleep 10
 # Run lammps with 4 ppn
 srun --exclusive -N 16 -n 64 \
      /home/users/msrinivasa/develop/lammps/build/lmp+trace \
-     -i /home/users/msrinivasa/develop/lammps/examples/DIFFUSE/in.msd.2d > lammps.001.out
+     -i /home/users/msrinivasa/develop/lammps/examples/DIFFUSE/in.msd.2d > lammps.out
 
 # wait till all jobsteps finish
 wait
