@@ -85,4 +85,22 @@ pat_report -v -d ti%@0.95,ti,tr,Tc -b gr,fu,ni,pe -s table.min_sa_pct=0.95,show_
 
 pat_report -v -d LU@0.0095,LT,tl,Lc@,Lz,La,Lm,LM,Ln -b fu=/.LOOP[.],ni,pe -s table.min_sa_pct=0.95 -s table.missing_dopt=tolerate -s table.overhead=include -s table.total=hide -f rpt -o loop_overall.rpt .
 
+#CMD1: List Average, Max/PE, Min/PE times for each NIDS first, across Groups
+
+pat_report -v -d ti%@0.95,ti,max_ti,min_ti,tr,Tc -b gr,ni,pe=HIDE  -s table.min_sa_pct=0.95 -f rpt -o custom_profile_report.rpt .
+
+#CMD2: Same as CMD1, but hide the totals
+
+pat_report -v -d ti%@0.95,ti,max_ti,min_ti,tr,Tc -b gr,ni,pe=HIDE  -s table.min_sa_pct=0.95,table.total=hide -f rpt -o custom_profile_report.rpt .
+
+#CMD3: Same as CMD2, but filter for a specific Group of calls (i.e. 'MPI')
+
+pat_report -v -d ti%@0.95,ti,max_ti,min_ti,tr,Tc -b gr=MPI,ni,pe=HIDE  -s table.min_sa_pct=0.95,table.total=hide -f rpt -o custom_profile_report.rpt .
+
+#CMD4: Same as CMD2, but output data in csv in RPT file
+
+pat_report -v -d ti%@0.95,ti,max_ti,min_ti,tr,Tc -b gr,ni,pe=HIDE  -s table.min_sa_pct=0.95,table.total=hide,show_data="csv" -f rpt -o custom_profile_report.rpt .
+
+
 ```
+
