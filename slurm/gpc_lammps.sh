@@ -84,8 +84,8 @@ sleep 30
 export LAMMPS_CONGESTED_START=`date -uI'seconds'`
 # Run lammps with congestion with 4 ppn
 srun --exclusive \
-     --nodes $LAMMPS_NC \
-     --ntasks-per-node $LAMMPS_PE_COUNT \
+     --nodes=$LAMMPS_NC \
+     --ntasks-per-node=$LAMMPS_PPN \
      $APP_BASE_DIR/lammps/build/lmp+tracing \
      -i $APP_BASE_DIR/lammps/examples/DIFFUSE/in.msd.2d \
      > $PAT_RT_EXPDIR_BASE/lammps.congested.out
