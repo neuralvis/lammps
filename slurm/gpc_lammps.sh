@@ -45,14 +45,14 @@ echo "GPCNet Allocation: "$GPCNET_NC>>$EXPERIMENT_METAFILE
 echo "LAMMPS Allocation: "$LAMMPS_NC>>$EXPERIMENT_METAFILE
 echo "Nodelist: "$SLURM_JOB_NODELIST>>$EXPERIMENT_METAFILE
 # Define a few craypat related environment variables for this jobstep
-export PAT_RT_EXPDIR_BASE=$DATA_DIR/idle
+export PAT_RT_EXPDIR_BASE=$DATA_DIR/lammps/idle
 # export PAT_RT_EXPFILE_MAX=$LAMMPS_PE_COUNT
 mkdir -p $PAT_RT_EXPDIR_BASE
 
 # Record the job start time
 export LAMMPS_IDLE_START=`date -uI'seconds'`
 # Run lammps without congestion with 4 ppn
-srun --exclusive \
+srun --relative=0 \
      --nodes=$LAMMPS_NC \
      --ntasks-per-node=$LAMMPS_PPN \
     $APP_BASE_DIR/lammps/build/lmp+tracing \
@@ -65,14 +65,14 @@ export LAMMPS_IDLE_END=`date -uI'seconds'`
 sleep 30
 
 # Define a few craypat related environment variables for this jobstep
-export PAT_RT_EXPDIR_BASE=$DATA_DIR/congested
+export PAT_RT_EXPDIR_BASE=$DATA_DIR/gpcnet
 # export PAT_RT_EXPFILE_MAX=$LAMMPS_PE_COUNT
 mkdir -p $PAT_RT_EXPDIR_BASE
 
 # Record the job start time
 export GPCNET_START=`date -uI'seconds'`
 # Run gpcnet on its allocation with 10 ppn
-srun --exclusive \
+srun --relative=$LAMMPS_NC \
      --nodes=$GPCNET_NC \
      --ntasks-per-node $GPCNET_PPN \
      $APP_BASE_DIR/GPCNET/network_load_test \
@@ -80,10 +80,15 @@ srun --exclusive \
 # wait for a minute till gpcnet primes up the network
 sleep 30
 
+# Define a few craypat related environment variables for this next jobstep
+export PAT_RT_EXPDIR_BASE=$DATA_DIR/lammps/congested
+# export PAT_RT_EXPFILE_MAX=$LAMMPS_PE_COUNT
+mkdir -p $PAT_RT_EXPDIR_BASE
+
 # Record the job start time
 export LAMMPS_CONGESTED_START=`date -uI'seconds'`
 # Run lammps with congestion with 4 ppn
-srun --exclusive \
+srun --relative=0 \
      --nodes=$LAMMPS_NC \
      --ntasks-per-node=$LAMMPS_PPN \
      $APP_BASE_DIR/lammps/build/lmp+tracing \
@@ -111,7 +116,3 @@ rm *.rec
 
 # Clean up the lammps log output (it is redundant)
 rm log.lammps
-
-# sbatch cmd on Shandy that works [October 6, 2020]
-
-# sbatch --exclude=nid001023,nid001143,nid001297,nid001307,nid001553,nid001569,nid001734,nid001838,nid001842,nid001864,nid001881,nid001885,nid001887,nid001900,nid001944,nid001965,nid002000  gpc_lammps.002.sh
