@@ -10,7 +10,7 @@
 # job stderr file
 #SBATCH --error=E0001.%J.err
 # maximum job time in HH:MM:SS
-#SBATCH --time=06:00:00
+#SBATCH --time=01:00:00
 #SBATCH --nodes=100
 # maximum memory
 #SBATCH --mem-per-cpu=512M
@@ -52,10 +52,13 @@ mkdir -p $PAT_RT_EXPDIR_BASE
 # Record the job start time
 export LAMMPS_IDLE_START=`date -uI'seconds'`
 # Run lammps without congestion with 4 ppn
-srun --exclusive -N $LAMMPS_NC -n $LAMMPS_PPN \
+srun --exclusive \
+     --nodes=$LAMMPS_NC \
+     --ntasks-per-node=$LAMMPS_PPN \
     $APP_BASE_DIR/lammps/build/lmp+tracing \
     -i $APP_BASE_DIR/lammps/examples/DIFFUSE/in.msd.2d \
     > $PAT_RT_EXPDIR_BASE/lammps.idle.out
+# Record the job end time
 export LAMMPS_IDLE_END=`date -uI'seconds'`
 
 # wait for 30 seconds
@@ -66,20 +69,27 @@ export PAT_RT_EXPDIR_BASE=$DATA_DIR/congested
 # export PAT_RT_EXPFILE_MAX=$LAMMPS_PE_COUNT
 mkdir -p $PAT_RT_EXPDIR_BASE
 
+# Record the job start time
 export GPCNET_START=`date -uI'seconds'`
 # Run gpcnet on its allocation with 10 ppn
-srun --exclusive -N $GPCNET_NC  -n $GPCNET_PPN \
-     $APP_BASE_DIR/GPCNET/network_load_test > $PAT_RT_EXPDIR_BASE/gpcnet.out &
-
+srun --exclusive \
+     --nodes=$GPCNET_NC \
+     --ntasks-per-node $GPCNET_PPN \
+     $APP_BASE_DIR/GPCNET/network_load_test \
+     > $PAT_RT_EXPDIR_BASE/gpcnet.out &
 # wait for a minute till gpcnet primes up the network
 sleep 30
 
+# Record the job start time
 export LAMMPS_CONGESTED_START=`date -uI'seconds'`
 # Run lammps with congestion with 4 ppn
-srun --exclusive -N $LAMMPS_NC -n $LAMMPS_PE_COUNT \
+srun --exclusive \
+     --nodes $LAMMPS_NC \
+     --ntasks-per-node $LAMMPS_PE_COUNT \
      $APP_BASE_DIR/lammps/build/lmp+tracing \
      -i $APP_BASE_DIR/lammps/examples/DIFFUSE/in.msd.2d \
      > $PAT_RT_EXPDIR_BASE/lammps.congested.out
+# Record the job end time
 export LAMMPS_CONGESTED_END=`date -uI'seconds'`
 
 # wait till all jobsteps finish
@@ -89,10 +99,10 @@ wait
 export GPCNET_END=`date -uI'seconds'`
 
 # record all jobsteps
-echo "start_time,end_time,job_id,job_name,user"
-echo $LAMMPS_IDLE_START,$LAMMPS_IDLE_END,$EXPERIMENT_NAME.01,$EXPERIMENT_NAME.LAMMPS.IDLE,$USER
-echo $GPCNET_START,$GPCNET_END,$EXPERIMENT_NAME.02,$EXPERIMENT_NAME.GPCNET.AGGRESSOR,$USER
-echo $LAMMPS_CONGESTED_START,$LAMMPS_CONGESTED_END,$EXPERIMENT_NAME.03,$EXPERIMENT_NAME.LAMMPS.CONGESTED,$USER
+echo "start_time,end_time,job_id,job_name,user">$EXPERIMENT_JOBFILE
+echo $LAMMPS_IDLE_START,$LAMMPS_IDLE_END,$EXPERIMENT_NAME.01,$EXPERIMENT_NAME.LAMMPS.IDLE,$USER>>$EXPERIMENT_JOBFILE
+echo $GPCNET_START,$GPCNET_END,$EXPERIMENT_NAME.02,$EXPERIMENT_NAME.GPCNET.AGGRESSOR,$USER>>$EXPERIMENT_JOBFILE
+echo $LAMMPS_CONGESTED_START,$LAMMPS_CONGESTED_END,$EXPERIMENT_NAME.03,$EXPERIMENT_NAME.LAMMPS.CONGESTED,$USER>>$EXPERIMENT_JOBFILE
 
 
 # Clean up GPCNET output, since we don't need it
