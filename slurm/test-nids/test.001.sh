@@ -26,7 +26,7 @@ echo $SLURM_JOB_NUM_NODES >> jobstep2
 echo $SLURM_JOB_NAME >> jobstep2
 
 
-srun --exclusive  --nodes=2 --ntasks-per-node=3 step1.sh >> jobstep1  &
-srun --exclusive  --nodes=1 --ntasks-per-node=4 step2.sh >> jobstep2
+srun --relative=0  --nodes=2 --ntasks-per-node=3 step1.sh >> jobstep1  &
+srun --relative=2  --nodes=1 --ntasks-per-node=4 step2.sh >> jobstep2
 
 wait

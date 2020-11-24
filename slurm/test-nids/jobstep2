@@ -1,7 +1,7 @@
-nid0000[4-6]
+nid[001044,001046-001047]
 3
 test.001
-Jobstep 2: +nid00006 cicero-dvs-eth0 
-Jobstep 2: +nid00006 cicero-dvs-eth0 
-Jobstep 2: +nid00006 cicero-dvs-eth0 
-Jobstep 2: +nid00006 cicero-dvs-eth0 
+Jobstep 2: +nid001047-nmn nid001047.local nid001047.local 
+Jobstep 2: +nid001047-nmn nid001047.local nid001047.local 
+Jobstep 2: +nid001047-nmn nid001047.local nid001047.local 
+Jobstep 2: +nid001047-nmn nid001047.local nid001047.local 
