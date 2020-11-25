@@ -11,72 +11,29 @@
 #SBATCH --error=gen_report.%J.err
 # maximum job time in HH:MM:SS
 #SBATCH --time=02:00:00
-#SBATCH --nodes=14
+#SBATCH --nodes=3
 # maximum memory
-#SBATCH --mem=128000
-# required CPUs per task
-#SBATCH --cpus-per-task=64
+#SBATCH --mem=128G
 ###
 
 module restore PrgEnv-cray
 module load perftools-base
 module load perftools
 
+export LAMMPS_BINARY=/home/users/msrinivasa/develop/lammps/build/lmp+tracing
+export GPCNET_BINARY=/home/users/msrinivasa/develop/GPCNET/network_load_test+pat
 
-srun --exclusive -N 1 -n 1 /lus/cls01053/msrinivasa/develop/lammps/perftools/genreport.sh \
-     /lus/cls01053/msrinivasa/develop/lammps/slurm/experiment.005/data/idle/lmp+tracing+235468-1005t &
-srun --exclusive -N 1 -n 1 /lus/cls01053/msrinivasa/develop/lammps/perftools/genreport.sh \
-     /lus/cls01053/msrinivasa/develop/lammps/slurm/experiment.005/data/congested/lmp+tracing+236174-1005t &
-srun --exclusive -N 1 -n 1 /lus/cls01053/msrinivasa/develop/lammps/perftools/genreport.sh \
-     /lus/cls01053/msrinivasa/develop/lammps/slurm/experiment.006/data/idle/lmp+tracing+237621-1005t &
-srun --exclusive -N 1 -n 1 /lus/cls01053/msrinivasa/develop/lammps/perftools/genreport.sh \
-     /lus/cls01053/msrinivasa/develop/lammps/slurm/experiment.006/data/congested/lmp+tracing+238345-1005t &
-srun --exclusive -N 1 -n 1 /lus/cls01053/msrinivasa/develop/lammps/perftools/genreport.sh \
-     /lus/cls01053/msrinivasa/develop/lammps/slurm/experiment.007/data/idle/lmp+tracing+240216-1005t &
-srun --exclusive -N 1 -n 1 /lus/cls01053/msrinivasa/develop/lammps/perftools/genreport.sh \
-     /lus/cls01053/msrinivasa/develop/lammps/slurm/experiment.007/data/congested/lmp+tracing+241022-1005t &
-srun --exclusive -N 1 -n 1 /lus/cls01053/msrinivasa/develop/lammps/perftools/genreport.sh \
-     /lus/cls01053/msrinivasa/develop/lammps/slurm/experiment.008/data/idle/lmp+tracing+211815-1000t &
-srun --exclusive -N 1 -n 1 /lus/cls01053/msrinivasa/develop/lammps/perftools/genreport.sh \
-     /lus/cls01053/msrinivasa/develop/lammps/slurm/experiment.008/data/congested/lmp+tracing+212856-1000t &
-srun --exclusive -N 1 -n 1 /lus/cls01053/msrinivasa/develop/lammps/perftools/genreport.sh \
-     /lus/cls01053/msrinivasa/develop/lammps/slurm/experiment.009/data/idle/lmp+tracing+214220-1000t &
-srun --exclusive -N 1 -n 1 /lus/cls01053/msrinivasa/develop/lammps/perftools/genreport.sh \
-     /lus/cls01053/msrinivasa/develop/lammps/slurm/experiment.009/data/congested/lmp+tracing+215485-1000t &
-srun --exclusive -N 1 -n 1 /lus/cls01053/msrinivasa/develop/lammps/perftools/genreport.sh \
-     /lus/cls01053/msrinivasa/develop/lammps/slurm/experiment.010/data/idle/lmp+tracing+216945-1000t &
-srun --exclusive -N 1 -n 1 /lus/cls01053/msrinivasa/develop/lammps/perftools/genreport.sh \
-     /lus/cls01053/msrinivasa/develop/lammps/slurm/experiment.010/data/congested/lmp+tracing+218486-1000t &
-srun --exclusive -N 1 -n 1 /lus/cls01053/msrinivasa/develop/lammps/perftools/genreport.sh \
-     /lus/cls01053/msrinivasa/develop/lammps/slurm/experiment.011/data/idle/lmp+tracing+220520-1000t &
-srun --exclusive -N 1 -n 1 /lus/cls01053/msrinivasa/develop/lammps/perftools/genreport.sh \
-     /lus/cls01053/msrinivasa/develop/lammps/slurm/experiment.011/data/congested/lmp+tracing+221981-1000t 
+srun --exclusive --nodes=1 --ntasks=1 /lus/cls01053/msrinivasa/develop/lammps/perftools/genreport.sh \
+     /lus/cls01053/msrinivasa/develop/lammps/slurm/E0001/data/lammps/idle/lmp+tracing+25071-1030t \
+     $LAMMPS_BINARY &
 
+srun --exclusive --nodes=1 --ntasks=1 /lus/cls01053/msrinivasa/develop/lammps/perftools/genreport.sh \
+     /lus/cls01053/msrinivasa/develop/lammps/slurm/E0001/data/lammps/congested/lmp+tracing+25358-1030t \
+     $LAMMPS_BINARY &
 
-# srun --exclusive -N 1 -n 1 /lus/cls01053/msrinivasa/develop/lammps/perftools/genreport.sh \
-#      /lus/cls01053/msrinivasa/develop/lammps/slurm/experiment.012/data/idle1/lmp+tracing+104200-1000t/ &
-# srun --exclusive -N 1 -n 1 /lus/cls01053/msrinivasa/develop/lammps/perftools/genreport.sh \
-#      /lus/cls01053/msrinivasa/develop/lammps/slurm/experiment.012/data/idle2/lmp+tracing+104655-1000t/ &
-# srun --exclusive -N 1 -n 1 /lus/cls01053/msrinivasa/develop/lammps/perftools/genreport.sh \
-#      /lus/cls01053/msrinivasa/develop/lammps/slurm/experiment.016/data/idle1/lmp+tracing+105768-1000t/ &
-# srun --exclusive -N 1 -n 1 /lus/cls01053/msrinivasa/develop/lammps/perftools/genreport.sh \
-#      /lus/cls01053/msrinivasa/develop/lammps/slurm/experiment.016/data/idle2/lmp+tracing+106010-1000t/ &
-# srun --exclusive -N 1 -n 1 /lus/cls01053/msrinivasa/develop/lammps/perftools/genreport.sh \
-#      /lus/cls01053/msrinivasa/develop/lammps/slurm/experiment.017/data/idle/lmp+tracing+108175-1000t/ &
-# srun --exclusive -N 1 -n 1 /lus/cls01053/msrinivasa/develop/lammps/perftools/genreport.sh \
-#      /lus/cls01053/msrinivasa/develop/lammps/slurm/experiment.017/data/congested/lmp+tracing+109952-1000t/ &
-# srun --exclusive -N 1 -n 1 /lus/cls01053/msrinivasa/develop/lammps/perftools/genreport.sh \
-#      /lus/cls01053/msrinivasa/develop/lammps/slurm/experiment.018/data/idle/lmp+tracing+112992-1000t/ &
-# srun --exclusive -N 1 -n 1 /lus/cls01053/msrinivasa/develop/lammps/perftools/genreport.sh \
-#      /lus/cls01053/msrinivasa/develop/lammps/slurm/experiment.018/data/congested/lmp+tracing+113973-1000t/ &
-# srun --exclusive -N 1 -n 1 /lus/cls01053/msrinivasa/develop/lammps/perftools/genreport.sh \
-#      /lus/cls01053/msrinivasa/develop/lammps/slurm/experiment.019/data/idle1/lmp+tracing+116723-1000t/ &
-# srun --exclusive -N 1 -n 1 /lus/cls01053/msrinivasa/develop/lammps/perftools/genreport.sh \
-#      /lus/cls01053/msrinivasa/develop/lammps/slurm/experiment.019/data/idle2/lmp+tracing+117204-1000t/ &
-# srun --exclusive -N 1 -n 1 /lus/cls01053/msrinivasa/develop/lammps/perftools/genreport.sh \
-#      /lus/cls01053/msrinivasa/develop/lammps/slurm/experiment.019/data/congested/lmp+tracing+118309-1000t/
+srun --exclusive --nodes=1 --ntasks=1 /lus/cls01053/msrinivasa/develop/lammps/perftools/genreport.sh \
+     /lus/cls01053/msrinivasa/develop/lammps/slurm/E0001/data/gpcnet/network_load_test+pat+186364-1081t \
+     $GPCNET_BINARY
 
-# wait until all job steps complete
+# wait till all job steps complete
 wait 
-
-
