@@ -75,7 +75,7 @@ export GPCNET_START=`date -uI'seconds'`
 srun --relative=$LAMMPS_NC \
      --nodes=$GPCNET_NC \
      --ntasks-per-node $GPCNET_PPN \
-     $APP_BASE_DIR/GPCNET/network_load_test \
+     $APP_BASE_DIR/GPCNET/network_load_test+pat \
      > $PAT_RT_EXPDIR_BASE/gpcnet.out &
 # wait for a minute till gpcnet primes up the network
 sleep 30
