@@ -14,7 +14,7 @@ cd lammps
 mkdir build
 cd build
 
-CC=/opt/cray/pe/craype/2.7.3/bin/cc CXX=/opt/cray/pe/craype/2.7.3/bin/CC \
+CC=`which cc` CXX=`which CC` \
 cmake ../cmake/ \
 -DBUILD_MPI=yes \
 -DCMAKE_CXX_FLAGS=-finstrument-loops \
@@ -103,4 +103,3 @@ pat_report -v -d ti%@0.95,ti,max_ti,min_ti,tr,Tc -b gr,ni,pe=HIDE  -s table.min_
 
 
 ```
-
