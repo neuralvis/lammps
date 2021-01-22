@@ -37,6 +37,7 @@ export Pz=20
 
 # Define directories and files
 export APP_BASE_DIR=/lus/cls01053/msrinivasa/develop
+export LMP_ROOT=$APP_BASE_DIR/lammps
 export DATA_DIR=./data
 export EXPERIMENT_METAFILE=$EXPERIMENT_NAME.README.txt
 export EXPERIMENT_JOBFILE=$EXPERIMENT_NAME.JOBFILE.csv

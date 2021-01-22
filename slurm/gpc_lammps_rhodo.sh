@@ -40,6 +40,7 @@ export Pz=15
 
 # Define directories and files
 export APP_BASE_DIR=/home/users/msrinivasa/develop
+export LMP_ROOT=$APP_BASE_DIR/lammps
 export DATA_DIR=./data
 export EXPERIMENT_METAFILE=$EXPERIMENT_NAME.README.txt
 export EXPERIMENT_JOBFILE=$EXPERIMENT_NAME.JOBFILE.csv
@@ -71,22 +72,6 @@ export LAMMPS_IDLE_END=`date -uI'seconds'`
 # wait for 30 seconds
 sleep 30
 
-# Define a few craypat related environment variables for this jobstep
-export PAT_RT_EXPDIR_BASE=$DATA_DIR/gpcnet
-# export PAT_RT_EXPFILE_MAX=$LAMMPS_PE_COUNT
-mkdir -p $PAT_RT_EXPDIR_BASE
-
-# Record the job start time
-export GPCNET_START=`date -uI'seconds'`
-# Run gpcnet on its allocation with 64 ppn
-srun --relative=$LAMMPS_NC \
-     --nodes=$GPCNET_NC \
-     --ntasks-per-node $GPCNET_PPN \
-     $APP_BASE_DIR/GPCNET/network_load_test+pat \
-     > $PAT_RT_EXPDIR_BASE/gpcnet.out &
-# wait for a minute till gpcnet primes up the network
-sleep 30
-
 # Define a few craypat related environment variables for this next jobstep
 export PAT_RT_EXPDIR_BASE=$DATA_DIR/lammps/congested
 # export PAT_RT_EXPFILE_MAX=$LAMMPS_PE_COUNT
@@ -100,15 +85,32 @@ srun --relative=0 \
      --ntasks-per-node=$LAMMPS_PPN \
      $APP_BASE_DIR/lammps/build/lmp+tracing \
      -i $APP_BASE_DIR/lammps/examples/DIFFUSE/in.msd.2d \
-     > $PAT_RT_EXPDIR_BASE/lammps.congested.out
+     > $PAT_RT_EXPDIR_BASE/lammps.congested.out &
+
+# wait for a minute till gpcnet primes up the network
+sleep 60
+
+# Define a few craypat related environment variables for this jobstep
+export PAT_RT_EXPDIR_BASE=$DATA_DIR/gpcnet
+# export PAT_RT_EXPFILE_MAX=$LAMMPS_PE_COUNT
+mkdir -p $PAT_RT_EXPDIR_BASE
+
+# Record the job start time
+export GPCNET_START=`date -uI'seconds'`
+# Run gpcnet on its allocation with 64 ppn
+srun --relative=$LAMMPS_NC \
+     --nodes=$GPCNET_NC \
+     --ntasks-per-node $GPCNET_PPN \
+     $APP_BASE_DIR/GPCNET/network_load_test+pat \
+     > $PAT_RT_EXPDIR_BASE/gpcnet.out 
 # Record the job end time
-export LAMMPS_CONGESTED_END=`date -uI'seconds'`
+export GPCNET_END=`date -uI'seconds'`
 
 # wait till all jobsteps finish
 wait
 
-# now we know GPCNET is done
-export GPCNET_END=`date -uI'seconds'`
+# now we know LAMMPS is done
+export LAMMPS_CONGESTED_END=`date -uI'seconds'`
 
 # record all jobsteps
 echo "start_time,end_time,job_id,job_name,user">$EXPERIMENT_JOBFILE
