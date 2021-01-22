@@ -31,9 +31,9 @@ export LAMMPS_PPN=64
 # Define scaling for LAMMPS lj problem
 # See https://github.com/neuralvis/lammps/tree/master/bench
 # for details
-export Px=20
-export Py=20
-export Pz=20
+export Px=15
+export Py=15
+export Pz=15
 
 # Define directories and files
 export APP_BASE_DIR=/lus/cls01053/msrinivasa/develop
@@ -59,9 +59,9 @@ export LAMMPS_IDLE_START=`date -uI'seconds'`
 srun --relative=0 \
      --nodes=$LAMMPS_NC \
      --ntasks-per-node=$LAMMPS_PPN \
-     $APP_BASE_DIR/lammps/build/lmp+tracing \
+     $LMP_ROOT/build/lmp+tracing \
      -var x $Px -var y $Py -var z $Pz \
-     -in $APP_BASE_DIR/lammps/bench/in.rhodo.scaled \
+     -in $LMP_ROOT/perftools/inputfiles/in.rhodo.scaled \
      > $PAT_RT_EXPDIR_BASE/lammps.idle.out
 # Record the job end time
 export LAMMPS_IDLE_END=`date -uI'seconds'`
