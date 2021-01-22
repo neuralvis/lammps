@@ -63,9 +63,10 @@ export LAMMPS_IDLE_START=`date -uI'seconds'`
 srun --relative=0 \
      --nodes=$LAMMPS_NC \
      --ntasks-per-node=$LAMMPS_PPN \
-    $APP_BASE_DIR/lammps/build/lmp+tracing \
-    -i $APP_BASE_DIR/lammps/examples/DIFFUSE/in.msd.2d \
-    > $PAT_RT_EXPDIR_BASE/lammps.idle.out
+     $LMP_ROOT/build/lmp+tracing \
+     -var x $Px -var y $Py -var z $Pz \
+     -in $LMP_ROOT/perftools/inputfiles/in.rhodo.scaled \
+     > $PAT_RT_EXPDIR_BASE/lammps.idle.out
 # Record the job end time
 export LAMMPS_IDLE_END=`date -uI'seconds'`
 
@@ -79,14 +80,14 @@ mkdir -p $PAT_RT_EXPDIR_BASE
 
 # Record the job start time
 export LAMMPS_CONGESTED_START=`date -uI'seconds'`
-# Run lammps with congestion with 4 ppn
+# Run lammps without congestion with 64 ppn
 srun --relative=0 \
      --nodes=$LAMMPS_NC \
      --ntasks-per-node=$LAMMPS_PPN \
-     $APP_BASE_DIR/lammps/build/lmp+tracing \
-     -i $APP_BASE_DIR/lammps/examples/DIFFUSE/in.msd.2d \
-     > $PAT_RT_EXPDIR_BASE/lammps.congested.out &
-
+     $LMP_ROOT/build/lmp+tracing \
+     -var x $Px -var y $Py -var z $Pz \
+     -in $LMP_ROOT/perftools/inputfiles/in.rhodo.scaled \
+     > $PAT_RT_EXPDIR_BASE/lammps.idle.out &
 # wait for a minute till gpcnet primes up the network
 sleep 60
 
