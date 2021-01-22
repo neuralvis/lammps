@@ -55,7 +55,7 @@ mkdir -p $PAT_RT_EXPDIR_BASE
 
 # Record the job start time
 export LAMMPS_IDLE_START=`date -uI'seconds'`
-# Run lammps without congestion with 10 ppn
+# Run lammps without congestion with 64 ppn
 srun --relative=0 \
      --nodes=$LAMMPS_NC \
      --ntasks-per-node=$LAMMPS_PPN \
