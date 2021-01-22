@@ -4,6 +4,8 @@ variable	x index 1
 variable	y index 1
 variable	z index 1
 
+variable        root getenv LMP_ROOT
+
 units           real  
 neigh_modify    delay 5 every 1   
 
@@ -17,7 +19,8 @@ pair_style      lj/charmm/coul/long 8.0 10.0
 pair_modify     mix arithmetic 
 kspace_style    pppm 1e-4 
 
-read_data       data.rhodo
+read_data       ${root}/bench/data.rhodo
+
 
 replicate	$x $y $z
 
