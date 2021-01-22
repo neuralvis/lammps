@@ -28,7 +28,8 @@ cmake ../cmake/ \
 -DPKG_MANYBODY=yes \
 -DPKG_MISC=yes \
 -DPKG_MOLECULE=yes \
--DPKG_KSPACE=yes
+-DPKG_KSPACE=yes \
+-DPKG_RIGID=yes 
 
 make -j16
 ```
