@@ -24,15 +24,15 @@ export LAMMPS_BINARY=/home/users/msrinivasa/develop/lammps/build/lmp+tracing
 export GPCNET_BINARY=/home/users/msrinivasa/develop/GPCNET/network_load_test+pat
 
 srun --exclusive --nodes=1 --ntasks=1 /lus/cls01053/msrinivasa/develop/lammps/perftools/genreport.sh \
-     /lus/cls01053/msrinivasa/develop/lammps/slurm/E0001/data/lammps/idle/lmp+tracing+215293-1004t \
+     /lus/cls01053/msrinivasa/develop/lammps/slurm/E0002/data/lammps/idle/lmp+tracing+219081-1004t \
      $LAMMPS_BINARY &
 
 srun --exclusive --nodes=1 --ntasks=1 /lus/cls01053/msrinivasa/develop/lammps/perftools/genreport.sh \
-     /lus/cls01053/msrinivasa/develop/lammps/slurm/E0001/data/lammps/congested/lmp+tracing+216084-1004t \
+     /lus/cls01053/msrinivasa/develop/lammps/slurm/E0002/data/lammps/congested/lmp+tracing+108250-1004t \
      $LAMMPS_BINARY &
 
 srun --exclusive --nodes=1 --ntasks=1 /lus/cls01053/msrinivasa/develop/lammps/perftools/genreport.sh \
-     /lus/cls01053/msrinivasa/develop/lammps/slurm/E0001/data/gpcnet/network_load_test+pat+144819-1140t \
+     /lus/cls01053/msrinivasa/develop/lammps/slurm/E0002/data/gpcnet/network_load_test+pat+169448-1140t/ \
      $GPCNET_BINARY
 
 # wait till all job steps complete
