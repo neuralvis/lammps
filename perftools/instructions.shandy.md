@@ -27,7 +27,9 @@ cmake ../cmake/ \
 -DPKG_GRANULAR=yes \
 -DPKG_MANYBODY=yes \
 -DPKG_MISC=yes \
--DPKG_MOLECULE=yes
+-DPKG_MOLECULE=yes \
+-DPKG_KSPACE=yes \
+-DPKG_RIGID=yes 
 
 make -j16
 ```
@@ -36,10 +38,12 @@ make -j16
 
 ```bash
 # sampling experiment
-pat_build -Drtenv=PAT_RT_SUMMARY=1 -Drtenv=PAT_RT_TRACE_HOOKS=1 lmp
+pat_build -Drtenv=PAT_RT_SUMMARY=1 -Drtenv=PAT_RT_TRACE_HOOKS=1 -u lmp
+-o lmp+sampling
 
 # tracing experiment
-pat_build -g mpi -Drtenv=PAT_RT_SUMMARY=1 -Drtenv=PAT_RT_TRACE_HOOKS=1 -u lmp
+pat_build -g mpi -Drtenv=PAT_RT_SUMMARY=1 -Drtenv=PAT_RT_TRACE_HOOKS=1
+-u lmp -o lmp+tracing
 
 ```
 

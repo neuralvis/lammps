@@ -11,7 +11,7 @@
 #SBATCH --error=E0001.%J.err
 # maximum job time in HH:MM:SS
 #SBATCH --time=01:00:00
-#SBATCH --nodes=100
+#SBATCH --nodes=640
 # maximum memory
 #SBATCH --mem-per-cpu=512M
 # run a single task
@@ -26,10 +26,10 @@ export EXPERIMENT_NAME=$SLURM_JOB_NAME
 
 # Define allocations
 export TOTAL_NC=$SLURM_JOB_NUM_NODES
-export LAMMPS_NC=50
+export LAMMPS_NC=100
 export LAMMPS_PPN=4
-export GPCNET_NC=50
-export GPCNET_PPN=10
+export GPCNET_NC=540
+export GPCNET_PPN=128
 
 # Define directories and files
 export APP_BASE_DIR=/home/users/msrinivasa/develop
@@ -71,14 +71,14 @@ mkdir -p $PAT_RT_EXPDIR_BASE
 
 # Record the job start time
 export GPCNET_START=`date -uI'seconds'`
-# Run gpcnet on its allocation with 10 ppn
+# Run gpcnet on its allocation with $GPCNET_PPN ppn
 srun --relative=$LAMMPS_NC \
      --nodes=$GPCNET_NC \
      --ntasks-per-node $GPCNET_PPN \
      $APP_BASE_DIR/GPCNET/network_load_test+pat \
      > $PAT_RT_EXPDIR_BASE/gpcnet.out &
-# wait for a minute till gpcnet primes up the network
-sleep 30
+# wait for a few minutes till gpcnet primes up the network
+sleep 180
 
 # Define a few craypat related environment variables for this next jobstep
 export PAT_RT_EXPDIR_BASE=$DATA_DIR/lammps/congested
